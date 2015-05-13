@@ -1,0 +1,45 @@
+Game idea
+
+Player Controls:
+ ---
+ first person / *(Third person switch)
+
+ Melee and ranged combat options
+
+ Player Repairs/Upgrades towers 
+	- *(Player can channel energy to buff tower)
+	- *()
+
+ ---
+
+GUI:
+ --- 
+ Player Health
+ *Map
+ 	- Towers under attack are marks
+ Currency 
+ Pop up HUD with Inventory / Weapon options
+
+ ---
+
+Items:
+ ---
+ Throw Item:
+ 	Grenade :: Lob	    | Area of effect
+ 	Potion  :: Lob      | Area of Effect
+ 	Weapons :: Straight | Single Hit
+	Scroll  :: Straight | Single Hit
+ Consumable:
+	Potion	  :: Player Heal
+	Overclock :: Bot speed Boost
+ ---
+
+Towers:
+ ---
+ Bot repairs / Build Towers
+ Player can destroy Tower
+ Single plasement 
+	- build Towers in queue
+ 
+---
+ 
