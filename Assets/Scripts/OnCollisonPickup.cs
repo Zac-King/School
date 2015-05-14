@@ -4,36 +4,26 @@ using System.Collections;
 public class OnCollisonPickup : MonoBehaviour {
 
     private bool drawGUI = false;
+    private bool picked  = false;
+
     public GameObject inventory;
-    public GameObject ball;
+    GameObject held;
+    Collider recent;
 
-    //void OnCollisionEnter(Collision c)
-    //{
-    //    if (c.gameObject.tag == "Pick Up")
-    //    {
-    //        print("Yay");
-    //        inventory.GetComponent<PlayerInventory>().inventory.Add(gameObject);
-    //        c.transform.parent = gameObject.transform;
-    //        c.transform.position = new Vector3(0, 0, 0);
-    //        c.transform.localPosition = new Vector3(0, 2, 0);
-    //        c.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-    //    }
-    //}
-
-    void OnTriggerEnter(Collision c)
+    void OnTriggerEnter(Collider c)
     {
         if (c.gameObject.tag == "Pick Up")
         {
-            print("Yay");
-            inventory.GetComponent<PlayerInventory>().inventory.Add(gameObject);
-            c.transform.parent = gameObject.transform;
-            c.transform.position = new Vector3(0, 0, 0);
-            c.transform.localPosition = new Vector3(0, 2, 0);
-            c.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+            drawGUI = true;
+            recent = c;
         }
-    }
 
-    
+
+    }
+    void OnTriggerExit()
+    {
+        drawGUI = false;
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -41,21 +31,52 @@ public class OnCollisonPickup : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	      
-        if(Input.GetKeyDown("o"))
+	void Update ()
+    {
+        if (drawGUI && (Input.GetKeyDown(KeyCode.E)) && held == null)
         {
-            Application.LoadLevel("ddol2");
-            DontDestroyOnLoad(gameObject);
-            DontDestroyOnLoad(ball);
+            picked = true;
+            held = recent.gameObject;
+            inventory.GetComponent<PlayerInventory>().inventory.Add(gameObject);
+            held.transform.parent = gameObject.transform;
+            held.transform.position = new Vector3(0, 0, 0);
+            held.transform.localPosition = new Vector3(0.45f, 0.2f, 0.7f);
+            held.gameObject.GetComponent<Rigidbody>().isKinematic = true;
         }
 
-        if (Input.GetKeyDown("p"))
+        if ((Input.GetKeyDown(KeyCode.U)) && held)
         {
-            Application.LoadLevel("ddol");
-            DontDestroyOnLoad(gameObject);
-            DontDestroyOnLoad(ball);
+            held.gameObject.GetComponent<Rigidbody>().isKinematic = false;
+            held.transform.parent = null;
+            held = null;
+            picked = false;
+
+            held.gameObject.GetComponent<Rigidbody>().AddForce(Camera.main.transform.forward * 20);
+            //Camera.main.transform.forward
+
+            // Camera's Forward
+            // held object's rigidbody to addForce(forward * joules)
         }
+
+        //if (Input.GetKeyDown("o"))
+        //{
+        //    Application.LoadLevel("ddol2");
+        //    DontDestroyOnLoad(gameObject);
+        //    //DontDestroyOnLoad(ball);
+        //}
+
+        //if (Input.GetKeyDown("p"))
+        //{
+        //    Application.LoadLevel("ddol");
+        //    DontDestroyOnLoad(gameObject);
+        //    //DontDestroyOnLoad(ball);
+        //}
 	}
+
+    void OnGUI()
+    {
+        if(drawGUI && !picked)
+            GUI.Box(new Rect(Screen.width / 2 - 50, 200, 102, 22), "E to pick up");
+    }
 
 }
